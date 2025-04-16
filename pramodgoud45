@@ -1,0 +1,13 @@
+import dask.dataframe as dd
+
+# Step 1: Load large CSV data (distributed)
+df = dd.read_csv('data/input-*.csv')  # Supports multiple files (e.g., input-1.csv, input-2.csv)
+
+# Step 2: Clean - drop missing values
+df = df.dropna()
+
+# Step 3: Transform - compute total price
+df['total'] = df['quantity'] * df['price']
+
+# Step 4: Save to output (distributed write)
+df.to_csv('data/output-*.csv', index=False, single_file=True)
